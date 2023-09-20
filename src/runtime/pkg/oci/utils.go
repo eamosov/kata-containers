@@ -766,6 +766,30 @@ func addHypervisorBlockOverrides(ocispec specs.Spec, sbConfig *vc.SandboxConfig)
 		return err
 	}
 
+	if err := newAnnotationConfiguration(ocispec, vcAnnotations.DiskRateLimiterBwMaxRate).setInt(func(diskRateLimiterBwMaxRate int64) {
+		sbConfig.HypervisorConfig.DiskRateLimiterBwMaxRate = diskRateLimiterBwMaxRate
+	}); err != nil {
+		return err
+	}
+
+	if err := newAnnotationConfiguration(ocispec, vcAnnotations.DiskRateLimiterBwOneTimeBurst).setInt(func(diskRateLimiterBwOneTimeBurst int64) {
+		sbConfig.HypervisorConfig.DiskRateLimiterBwOneTimeBurst = diskRateLimiterBwOneTimeBurst
+	}); err != nil {
+		return err
+	}
+
+	if err := newAnnotationConfiguration(ocispec, vcAnnotations.DiskRateLimiterOpsMaxRate).setInt(func(diskRateLimiterOpsMaxRate int64) {
+		sbConfig.HypervisorConfig.DiskRateLimiterOpsMaxRate = diskRateLimiterOpsMaxRate
+	}); err != nil {
+		return err
+	}
+
+	if err := newAnnotationConfiguration(ocispec, vcAnnotations.DiskRateLimiterOpsOneTimeBurst).setInt(func(diskRateLimiterOpsOneTimeBurst int64) {
+		sbConfig.HypervisorConfig.DiskRateLimiterOpsOneTimeBurst = diskRateLimiterOpsOneTimeBurst
+	}); err != nil {
+		return err
+	}
+
 	return newAnnotationConfiguration(ocispec, vcAnnotations.BlockDeviceCacheNoflush).setBool(func(blockDeviceCacheNoflush bool) {
 		sbConfig.HypervisorConfig.BlockDeviceCacheNoflush = blockDeviceCacheNoflush
 	})
@@ -1174,6 +1198,13 @@ func (a *annotationConfiguration) setUint(f func(uint64)) error {
 	})
 }
 
+func (a *annotationConfiguration) setInt(f func(int64)) error {
+	return a.setIntWithCheck(func(v int64) error {
+		f(v)
+		return nil
+	})
+}
+
 func (a *annotationConfiguration) setUintWithCheck(f func(uint64) error) error {
 	if value, ok := a.ocispec.Annotations[a.key]; ok {
 		uintValue, err := strconv.ParseUint(value, 10, 64)
@@ -1196,6 +1227,17 @@ func (a *annotationConfiguration) setFloat32WithCheck(f func(float32) error) err
 		}
 		float32Value := float32(float64Value)
 		return f(float32Value)
+	}
+	return nil
+}
+
+func (a *annotationConfiguration) setIntWithCheck(f func(int64) error) error {
+	if value, ok := a.ocispec.Annotations[a.key]; ok {
+		intValue, err := strconv.ParseInt(value, 10, 64)
+		if err != nil {
+			return fmt.Errorf(errAnnotationPositiveNumericKey, a.key)
+		}
+		return f(intValue)
 	}
 	return nil
 }

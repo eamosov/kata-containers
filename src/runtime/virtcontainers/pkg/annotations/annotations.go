@@ -226,6 +226,24 @@ const (
 	// Denotes whether flush requests for the device are ignored.
 	BlockDeviceCacheNoflush = kataAnnotHypervisorPrefix + "block_device_cache_noflush"
 
+	// DiskRateLimiterBwRate is used to control disk I/O bandwidth on VM level.
+	// The same value, defined in bits per second, is used for inbound and outbound bandwidth.
+	DiskRateLimiterBwMaxRate = kataAnnotHypervisorPrefix + "disk_bw_max_rate"
+
+	// DiskRateLimiterBwOneTimeBurst is used to control disk I/O bandwidth on VM level.
+	// This increases the initial max rate and this initial extra credit does *NOT* replenish
+	// and can be used for an *initial* burst of data.
+	DiskRateLimiterBwOneTimeBurst = kataAnnotHypervisorPrefix + "disk_bw_one_time_burst"
+
+	// DiskRateLimiterOpsRate is used to control disk I/O operations on VM level.
+	// The same value, defined in operations per second, is used for inbound and outbound bandwidth.
+	DiskRateLimiterOpsMaxRate = kataAnnotHypervisorPrefix + "disk_ops_max_rate"
+
+	// DiskRateLimiterOpsOneTimeBurst is used to control disk I/O operations on VM level.
+	// This increases the initial max rate and this initial extra credit does *NOT* replenish
+	// and can be used for an *initial* burst of data.
+	DiskRateLimiterOpsOneTimeBurst = kataAnnotHypervisorPrefix + "disk_ops_one_time_burst"
+
 	// RxRateLimiterMaxRate is a sandbox annotation that specifies max rate on network I/O inbound bandwidth.
 	RxRateLimiterMaxRate = kataAnnotHypervisorPrefix + "rx_rate_limiter_max_rate"
 
