@@ -1637,6 +1637,30 @@ func (q *qemu) hotplugAddBlockDevice(ctx context.Context, drive *config.BlockDri
 		return fmt.Errorf("Block device %s not recognized", q.config.BlockDeviceDriver)
 	}
 
+	throttleSettings := map[string]interface{}{}
+	throttleSettings["id"] = devID
+	throttleSettings["iops"] = 0
+	throttleSettings["iops_rd"] = 0
+	throttleSettings["iops_wr"] = 0
+	throttleSettings["bps"] = 0
+	throttleSettings["bps_rd"] = 0
+	throttleSettings["bps_wr"] = 0
+
+	if q.config.DiskRateLimiterOpsMaxRate != 0 {
+		throttleSettings["iops"] = q.config.DiskRateLimiterOpsMaxRate
+	}
+
+	if q.config.DiskRateLimiterBwMaxRate != 0 {
+		throttleSettings["bps"] = q.config.DiskRateLimiterBwMaxRate / 8
+	}
+
+	q.Logger().Info("Setting the block IO throttle:" + fmt.Sprint(throttleSettings))
+
+	if err = q.qmpMonitorCh.qmp.ExecuteBlockSetIOThrottle(q.qmpMonitorCh.ctx, throttleSettings); err != nil {
+		q.Logger().WithError(err).Warn("Unable to set the block IO throttle")
+		return nil
+	}
+
 	return nil
 }
 

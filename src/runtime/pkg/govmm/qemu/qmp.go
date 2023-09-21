@@ -882,6 +882,10 @@ func (q *QMP) ExecuteDeviceAdd(ctx context.Context, blockdevID, devID, driver, b
 	return q.executeCommand(ctx, "device_add", args, nil)
 }
 
+func (q *QMP) ExecuteBlockSetIOThrottle(ctx context.Context, args map[string]interface{}) error {
+	return q.executeCommand(ctx, "block_set_io_throttle", args, nil)
+}
+
 // ExecuteSCSIDeviceAdd adds the guest portion of a block device to a QEMU instance
 // using a SCSI driver with the device_add command.  blockdevID should match the
 // blockdevID passed to a previous call to ExecuteBlockdevAdd.  devID is the id of
