@@ -1638,7 +1638,12 @@ func (q *qemu) hotplugAddBlockDevice(ctx context.Context, drive *config.BlockDri
 	}
 
 	throttleSettings := map[string]interface{}{}
-	throttleSettings["id"] = devID
+
+	if q.config.BlockDeviceDriver == config.VirtioBlock {
+	    throttleSettings["id"] = devID + "/virtio-backend"
+        }else {
+	    throttleSettings["id"] = devID
+	}
 	throttleSettings["iops"] = 0
 	throttleSettings["iops_rd"] = 0
 	throttleSettings["iops_wr"] = 0
