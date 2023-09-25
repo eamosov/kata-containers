@@ -241,12 +241,12 @@ block_device_aio = "@DEFBLOCKDEVICEAIO_QEMU@"
 
 # Specifies cache-related options will be set to block devices or not.
 # Default false
-#block_device_cache_set = true
+block_device_cache_set = true
 
 # Specifies cache-related options for block devices.
 # Denotes whether use of O_DIRECT (bypass the host page cache) is enabled.
 # Default false
-#block_device_cache_direct = true
+block_device_cache_direct = true
 
 # Specifies cache-related options for block devices.
 # Denotes whether flush requests for the device are ignored.
@@ -266,7 +266,7 @@ enable_iothreads = @DEFENABLEIOTHREADS@
 # upfront or in the cases where you want memory latencies
 # to be very predictable
 # Default false
-#enable_mem_prealloc = true
+enable_mem_prealloc = true
 
 # Enable huge pages for VM RAM, default false
 # Enabling this will result in the VM memory
@@ -341,7 +341,7 @@ pflashes = []
 #
 # If set to the empty string "", no extra monitor socket is added. This is
 # the default.
-#extra_monitor_socket = hmp
+extra_monitor_socket = "hmp"
 
 # Disable the customizations done in the runtime when it detects
 # that it is running on top a VMM. This will result in the runtime
@@ -560,7 +560,7 @@ kernel_modules=[]
 # If enabled, user can connect guest OS running inside hypervisor
 # through "kata-runtime exec <sandbox-id>" command
 
-#debug_console_enabled = true
+debug_console_enabled = true
 
 # Agent connection dialing timeout value in seconds
 # (default: 45)

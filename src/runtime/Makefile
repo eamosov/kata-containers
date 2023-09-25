@@ -255,7 +255,7 @@ DEFMSIZE9P := 8192
 DEFVFIOMODE := guest-kernel
 
 # Default cgroup model
-DEFSANDBOXCGROUPONLY ?= false
+DEFSANDBOXCGROUPONLY ?= true
 
 DEFSTATICRESOURCEMGMT ?= false
 DEFSTATICRESOURCEMGMT_TEE = true
@@ -370,7 +370,7 @@ ifneq (,$(QEMUCMD))
     CONFIGS += $(CONFIG_QEMU_SE)
 
     # qemu-specific options (all should be suffixed by "_QEMU")
-    DEFBLOCKSTORAGEDRIVER_QEMU := virtio-scsi
+    DEFBLOCKSTORAGEDRIVER_QEMU := virtio-blk
     DEFBLOCKDEVICEAIO_QEMU := io_uring
     DEFNETWORKMODEL_QEMU := tcfilter
 

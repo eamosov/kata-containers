@@ -1659,10 +1659,8 @@ func (q *qemu) hotplugAddBlockDevice(ctx context.Context, drive *config.BlockDri
 		throttleSettings["bps"] = q.config.DiskRateLimiterBwMaxRate / 8
 	}
 
-	q.Logger().Info("Setting the block IO throttle:" + fmt.Sprint(throttleSettings))
-
 	if err = q.qmpMonitorCh.qmp.ExecuteBlockSetIOThrottle(q.qmpMonitorCh.ctx, throttleSettings); err != nil {
-		q.Logger().WithError(err).Warn("Unable to set the block IO throttle")
+		q.Logger().WithError(err).Warn("Unable to set the block IO throttle:" + fmt.Sprint(throttleSettings))
 		return nil
 	}
 
