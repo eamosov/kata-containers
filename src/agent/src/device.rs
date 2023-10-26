@@ -710,6 +710,8 @@ pub fn update_env_pci(
     env: &mut [String],
     pcimap: &HashMap<pci::Address, pci::Address>,
 ) -> Result<()> {
+
+    /*
     for envvar in env {
         let eqpos = envvar
             .find('=')
@@ -735,7 +737,7 @@ pub fn update_env_pci(
 
         envvar.replace_range(eqpos + 1.., guest_addrs.join(",").as_str());
     }
-
+*/
     Ok(())
 }
 
