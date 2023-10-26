@@ -74,7 +74,9 @@ func (device *VFIODevice) Attach(ctx context.Context, devReceiver api.DeviceRece
 		// If vfio.Port is not set we bail out, users should set
 		// explicitly the port in the config file
 		if vfio.Port == "" {
-			return fmt.Errorf("cold_plug_vfio= or hot_plug_vfio= port is not set for device %s (BridgePort | RootPort | SwitchPort)", vfio.BDF)
+//                       return fmt.Errorf("cold_plug_vfio= or hot_plug_vfio= port is not set for device %s (BridgePort | RootPort | SwitchPort)", vfio.BDF)
+			vfio.Port = "root-port"
+			deviceLogger().WithField("cold-plug", device.DeviceInfo.ColdPlug).Warn("cold_plug_vfio= or hot_plug_vfio= port is not set for device %s (BridgePort | RootPort | SwitchPort)", vfio.BDF)
 		}
 
 		if vfio.IsPCIe {
@@ -278,7 +280,7 @@ func BindDevicetoVFIO(bdf, hostDriver, vendorDeviceID string) (string, error) {
 	}).Info("Writing vendor-device-id to vfio new-id path")
 
 	if err := utils.WriteToFile(vfioNewIDPath, []byte(vendorDeviceID)); err != nil {
-		return "", err
+		deviceLogger().WithError(err).Warn("BindDevicetoVFIO")
 	}
 
 	// Bind to vfio-pci driver.
@@ -315,7 +317,7 @@ func BindDevicetoHost(bdf, hostDriver, vendorDeviceID string) error {
 
 	// To prevent new VFs from binding to VFIO-PCI, remove_id
 	if err := utils.WriteToFile(vfioRemoveIDPath, []byte(vendorDeviceID)); err != nil {
-		return err
+		api.DeviceLogger().WithError(err).Warn("BindDevicetoHost")
 	}
 
 	// Bind back to host driver
