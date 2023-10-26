@@ -266,7 +266,7 @@ enable_iothreads = @DEFENABLEIOTHREADS@
 # upfront or in the cases where you want memory latencies
 # to be very predictable
 # Default false
-enable_mem_prealloc = true
+enable_mem_prealloc = false
 
 # Enable huge pages for VM RAM, default false
 # Enabling this will result in the VM memory
@@ -274,7 +274,7 @@ enable_mem_prealloc = true
 # This is useful when you want to use vhost-user network
 # stacks within the container. This will automatically
 # result in memory pre allocation
-#enable_hugepages = true
+enable_hugepages = false
 
 # Enable vhost-user storage device, default false
 # Enabling this will result in some Linux reserved block type
@@ -291,11 +291,11 @@ vhost_user_store_path = "@DEFVHOSTUSERSTOREPATH@"
 # Enabling this will result in the VM having a vIOMMU device
 # This will also add the following options to the kernel's
 # command line: intel_iommu=on,iommu=pt
-#enable_iommu = true
+enable_iommu = true
 
 # Enable IOMMU_PLATFORM, default false
 # Enabling this will result in the VM device having iommu_platform=on set
-#enable_iommu_platform = true
+enable_iommu_platform = true
 
 # List of valid annotations values for the vhost user store path
 # The default if not set is empty (all annotations rejected.)
@@ -311,7 +311,7 @@ vhost_user_reconnect_timeout_sec = 0
 # will disable this feature. In the case of virtio-fs, this is enabled
 # automatically and '/dev/shm' is used as the backing folder.
 # This option will be ignored if VM templating is enabled.
-#file_mem_backend = "@DEFFILEMEMBACKEND@"
+file_mem_backend = "@DEFFILEMEMBACKEND@"
 
 # List of valid annotations values for the file_mem_backend annotation
 # The default if not set is empty (all annotations rejected.)
@@ -326,7 +326,7 @@ pflashes = []
 # to enable debug output where available.
 #
 # Default false
-#enable_debug = true
+enable_debug = true
 
 # This option allows to add an extra HMP or QMP socket when `enable_debug = true`
 #
@@ -600,7 +600,7 @@ disable_guest_seccomp=@DEFDISABLEGUESTSECCOMP@
 # vCPUs pinning settings
 # if enabled, each vCPU thread will be scheduled to a fixed CPU
 # qualified condition: num(vCPU threads) == num(CPUs in sandbox's CPUSet)
-# enable_vcpus_pinning = false
+enable_vcpus_pinning = true
 
 # Apply a custom SELinux security policy to the container process inside the VM.
 # This is used when you want to apply a type other than the default `container_t`,

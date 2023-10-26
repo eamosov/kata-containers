@@ -6,7 +6,7 @@
 # Intel x86-64 settings
 
 MACHINETYPE := q35
-KERNELPARAMS :=
+KERNELPARAMS := virtio_blk.use_bio=1
 MACHINEACCELERATORS :=
 CPUFEATURES := pmu=off
 
