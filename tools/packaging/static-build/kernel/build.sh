@@ -51,7 +51,7 @@ sudo docker pull ${container_image} || \
 sudo docker run --rm -i -v "${repo_root_dir}:${repo_root_dir}" \
 	-w "${PWD}" \
 	"${container_image}" \
-	bash -c "${kernel_builder} ${kernel_builder_args} setup"
+	bash -c "${kernel_builder} ${kernel_builder_args} setup -f"
 
 sudo docker run --rm -i -v "${repo_root_dir}:${repo_root_dir}" \
 	-w "${PWD}" \
