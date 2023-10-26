@@ -58,6 +58,7 @@ build_image() {
 	info "image os: $os_name"
 	info "image os version: $os_version"
 	sudo -E PATH="${PATH}" make image \
+		EXTRA_PKGS="vim dpdk iproute2 net-tools pciutils tcpdump" \
 		DISTRO="${os_name}" \
 		DEBUG="${DEBUG:-}" \
 		USE_DOCKER="1" \
