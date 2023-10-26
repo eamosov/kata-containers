@@ -2194,8 +2194,10 @@ func (s *Sandbox) updateResources(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	// Add default vcpus for sandbox
-	sandboxVCPUs += s.hypervisor.HypervisorConfig().NumVCPUsF
+
+	if sandboxVCPUs < s.hypervisor.HypervisorConfig().NumVCPUs {
+		sandboxVCPUs = s.hypervisor.HypervisorConfig().NumVCPUs
+	}
 
 	sandboxMemoryByte, sandboxneedPodSwap, sandboxSwapByte := s.calculateSandboxMemory()
 
@@ -2653,7 +2655,7 @@ func (s *Sandbox) getSandboxCPUSet() (string, string, error) {
 	cpuResult := cpuset.NewCPUSet()
 	memResult := cpuset.NewCPUSet()
 	for _, ctr := range s.config.Containers {
-		if ctr.Resources.CPU != nil {
+		if ctr.Resources.CPU != nil && ctr.Cmd.Args[0] != "/pause" {
 			currCPUSet, err := cpuset.Parse(ctr.Resources.CPU.Cpus)
 			if err != nil {
 				return "", "", fmt.Errorf("unable to parse CPUset.cpus for container %s: %v", ctr.ID, err)
@@ -2761,23 +2763,31 @@ func (s *Sandbox) checkVCPUsPinning(ctx context.Context) error {
 
 	// check if vCPU thread numbers and CPU numbers are equal
 	numVCPUs, numCPUs := len(vCPUThreadsMap.vcpus), len(cpuSetSlice)
+
+	virtLog.Debug("CPUsPinning: numVCPUs/numCPUs: ", numVCPUs, numCPUs, cpuSetStr)
+
 	// if not equal, we should reset threads scheduling to random pattern
-	if numVCPUs != numCPUs {
+	if numVCPUs > numCPUs {
 		if s.isVCPUsPinningOn {
+			virtLog.Debug("Reset CPUsPinning")
 			s.isVCPUsPinningOn = false
 			return s.resetVCPUsPinning(ctx, vCPUThreadsMap, cpuSetSlice)
 		}
 		return nil
 	}
+	virtLog.Debug("Setup CPUsPinning")
 	// if equal, we can use vCPU thread pinning
-	for i, tid := range vCPUThreadsMap.vcpus {
+	i := 0
+	for _, tid := range vCPUThreadsMap.vcpus {
 		if err := resCtrl.SetThreadAffinity(tid, cpuSetSlice[i:i+1]); err != nil {
 			if err := s.resetVCPUsPinning(ctx, vCPUThreadsMap, cpuSetSlice); err != nil {
 				return err
 			}
 			return fmt.Errorf("failed to set vcpu thread %d affinity to cpu %d: %v", tid, cpuSetSlice[i], err)
 		}
+		i++
 	}
+	virtLog.Info("Setup CPUsPinning: done", numVCPUs, numCPUs, cpuSetStr)
 	s.isVCPUsPinningOn = true
 	return nil
 }
