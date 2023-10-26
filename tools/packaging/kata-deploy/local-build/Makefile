@@ -19,40 +19,18 @@ endif
 
 ifeq ($(ARCH), x86_64)
 BASE_TARBALLS = serial-targets \
-	firecracker-tarball \
-	kernel-confidential-tarball \
-	kernel-dragonball-experimental-tarball \
-	kernel-nvidia-gpu-tarball \
-	kernel-nvidia-gpu-confidential-tarball \
-	kernel-nvidia-gpu-snp-tarball \
-	kernel-nvidia-gpu-tdx-experimental-tarball \
 	kernel-tarball \
-	kernel-tdx-experimental-tarball \
-	nydus-tarball \
-	ovmf-sev-tarball \
-	ovmf-tarball \
-	qemu-snp-experimental-tarball \
 	qemu-tarball \
-	qemu-tdx-experimental-tarball \
-	stratovirt-tarball \
 	shim-v2-tarball \
-	tdvf-tarball \
 	virtiofsd-tarball
-BASE_SERIAL_TARBALLS = rootfs-image-tarball \
-	rootfs-image-tdx-tarball \
-	rootfs-initrd-mariner-tarball \
-	rootfs-initrd-sev-tarball \
-	rootfs-initrd-tarball \
-	cloud-hypervisor-tarball \
-	cloud-hypervisor-glibc-tarball
+BASE_SERIAL_TARBALLS = rootfs-image-tarball
 else ifeq ($(ARCH), s390x)
 BASE_TARBALLS = serial-targets \
 	kernel-tarball \
 	qemu-tarball \
 	shim-v2-tarball \
 	virtiofsd-tarball
-BASE_SERIAL_TARBALLS = rootfs-image-tarball \
-	rootfs-initrd-tarball
+BASE_SERIAL_TARBALLS = rootfs-image-tarball
 endif
 
 define BUILD
