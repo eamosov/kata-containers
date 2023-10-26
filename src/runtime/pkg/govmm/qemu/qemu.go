@@ -1874,9 +1874,9 @@ func (vfioDev VFIODevice) QemuParams(config *Config) []string {
 		}
 	}
 
-	if vfioDev.Bus != "" {
-		deviceParams = append(deviceParams, fmt.Sprintf("bus=%s", vfioDev.Bus))
-	}
+//	if vfioDev.Bus != "" {
+//		deviceParams = append(deviceParams, fmt.Sprintf("bus=%s", vfioDev.Bus))
+//	}
 
 	if vfioDev.Transport.isVirtioCCW(config) {
 		deviceParams = append(deviceParams, fmt.Sprintf("devno=%s", vfioDev.DevNo))
