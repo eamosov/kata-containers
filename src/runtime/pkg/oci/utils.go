@@ -15,7 +15,6 @@ import (
 	"math"
 	"path/filepath"
 	"regexp"
-	goruntime "runtime"
 	"strconv"
 	"strings"
 	"syscall"
@@ -682,12 +681,8 @@ func addHypervisorMemoryOverrides(ocispec specs.Spec, sbConfig *vc.SandboxConfig
 }
 
 func addHypervisorCPUOverrides(ocispec specs.Spec, sbConfig *vc.SandboxConfig) error {
-	numCPUs := goruntime.NumCPU()
 
 	if err := newAnnotationConfiguration(ocispec, vcAnnotations.DefaultVCPUs).setFloat32WithCheck(func(vcpus float32) error {
-		if vcpus > float32(numCPUs) {
-			return fmt.Errorf("Number of cpus %f specified in annotation default_vcpus is greater than the number of CPUs %d on the system", vcpus, numCPUs)
-		}
 		sbConfig.HypervisorConfig.NumVCPUsF = float32(vcpus)
 		return nil
 	}); err != nil {
@@ -696,11 +691,6 @@ func addHypervisorCPUOverrides(ocispec specs.Spec, sbConfig *vc.SandboxConfig) e
 
 	return newAnnotationConfiguration(ocispec, vcAnnotations.DefaultMaxVCPUs).setUintWithCheck(func(maxVCPUs uint64) error {
 		max := uint32(maxVCPUs)
-
-		if max > uint32(numCPUs) {
-			return fmt.Errorf("Number of cpus %d in annotation default_maxvcpus is greater than the number of CPUs %d on the system", max, numCPUs)
-		}
-
 		if sbConfig.HypervisorType == vc.QemuHypervisor && max > govmm.MaxVCPUs() {
 			return fmt.Errorf("Number of cpus %d in annotation default_maxvcpus is greater than max no of CPUs %d supported for qemu", max, govmm.MaxVCPUs())
 		}
