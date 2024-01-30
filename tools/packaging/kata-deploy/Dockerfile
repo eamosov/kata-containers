@@ -5,10 +5,10 @@
 ARG BASE_IMAGE_NAME=alpine
 ARG BASE_IMAGE_TAG=3.18
 FROM $BASE_IMAGE_NAME:$BASE_IMAGE_TAG
-ARG KATA_ARTIFACTS=./kata-static.tar.xz
+ARG KATA_ARTIFACTS=kata-static.tar.xz
 ARG DESTINATION=/opt/kata-artifacts
 
-COPY ${KATA_ARTIFACTS} ${WORKDIR}
+COPY ./local-build/kata-static.tar.xz ${WORKDIR}/${KATA_ARTIFACTS}
 
 # I understand that in order to be on the safer side, it'd
 # be good to have the alpine packages pointing to a very
