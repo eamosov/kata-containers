@@ -2195,8 +2195,8 @@ func (s *Sandbox) updateResources(ctx context.Context) error {
 		return err
 	}
 
-	if sandboxVCPUs < s.hypervisor.HypervisorConfig().NumVCPUs {
-		sandboxVCPUs = s.hypervisor.HypervisorConfig().NumVCPUs
+	if sandboxVCPUs < s.hypervisor.HypervisorConfig().NumVCPUsF {
+		sandboxVCPUs = s.hypervisor.HypervisorConfig().NumVCPUsF
 	}
 
 	sandboxMemoryByte, sandboxneedPodSwap, sandboxSwapByte := s.calculateSandboxMemory()
