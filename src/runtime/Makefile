@@ -189,7 +189,7 @@ STRATOVIRTVALIDHYPERVISORPATHS := [\"$(STRATOVIRTPATH)\"]
 # Default number of vCPUs
 DEFVCPUS := 1
 # Default maximum number of vCPUs
-DEFMAXVCPUS := 0
+DEFMAXVCPUS := 88
 # Default memory size in MiB
 DEFMEMSZ := 2048
 # Default memory slots

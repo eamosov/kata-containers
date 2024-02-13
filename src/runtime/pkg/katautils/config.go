@@ -419,7 +419,7 @@ func (h hypervisor) defaultMaxVCPUs() uint32 {
 
 	//don't exceed the number of physical CPUs. If a default is not provided, use the
 	// numbers of physical CPUs
-	if reqVCPUs >= numcpus || reqVCPUs == 0 {
+	if reqVCPUs == 0 {
 		reqVCPUs = numcpus
 	}
 

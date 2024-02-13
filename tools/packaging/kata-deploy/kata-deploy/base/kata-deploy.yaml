@@ -17,7 +17,7 @@ spec:
       hostPID: true
       containers:
         - name: kube-kata
-          image: prodes14981z501.h.o3.ru:5000/kata-deploy:latest
+          image: gitlab-registry.ozon.ru/infrastructure/scylladb/scylla-images/kata-deploy:latest
           imagePullPolicy: Always
           lifecycle:
             preStop:
@@ -32,7 +32,7 @@ spec:
             - name: DEBUG
               value: "false"
             - name: SHIMS
-              value: "clh cloud-hypervisor dragonball fc qemu qemu-nvidia-gpu qemu-sev qemu-snp qemu-tdx stratovirt"
+              value: "qemu"
             - name: DEFAULT_SHIM
               value: "qemu"
             - name: CREATE_RUNTIMECLASSES
